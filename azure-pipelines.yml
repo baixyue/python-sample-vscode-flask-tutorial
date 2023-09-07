@@ -3,6 +3,7 @@
 # Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 
+
 trigger:
 - main
 
@@ -11,7 +12,7 @@ pool:
 strategy:
   matrix:
     Python37:
-      python.version: '3.7'
+      python.version: '3.9'
 
 steps:
 - task: UsePythonVersion@0
@@ -28,3 +29,17 @@ steps:
     pip install pytest pytest-azurepipelines
     pytest
   displayName: 'pytest'
+
+- task: AzureWebApp@1
+  displayName: 'Deploy Azure Web App : {{ webAppName }}'
+  inputs:
+    azureSubscription: $(azureServiceConnectionId)
+    appType: webApp
+    appName: $(webAppName)
+    package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
+    deploymentMethod: zipDeploy
+
+    # The following parameter is specific to the Flask example code. You may
+    # or may not need a startup command for your app.
+
+    startUpCommand: 'startup.txt'
