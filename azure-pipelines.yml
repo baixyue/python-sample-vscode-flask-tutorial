@@ -15,6 +15,12 @@ strategy:
       python.version: '3.9'
 
 steps:
+
+- task: AzureAppServiceSettings@1
+  inputs:
+    azureSubscription: 'Lizard People of The Hollow Earth Subscription(dbd94eae-ba51-4584-9dfa-f2cbefed36db)'
+    appName: 'yuebai-flaskpipeline'
+    resourceGroupName: 'yue.bai_rg_3155'
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '$(python.version)'
