@@ -1,4 +1,11 @@
 # Python package
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Lizard People of The Hollow Earth Subscription(dbd94eae-ba51-4584-9dfa-f2cbefed36db)'
+    appType: 'webAppLinux'
+    WebAppName: 'yuebai-flaskpipeline'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 # Create and test a Python package on multiple Python versions.
 # Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
