@@ -11,16 +11,10 @@ pool:
   vmImage: ubuntu-latest
 strategy:
   matrix:
-    Python37:
+    Python39:
       python.version: '3.9'
 
 steps:
-
-- task: AzureAppServiceSettings@1
-  inputs:
-    azureSubscription: 'Lizard People of The Hollow Earth Subscription(dbd94eae-ba51-4584-9dfa-f2cbefed36db)'
-    appName: 'yuebai-flaskpipeline'
-    resourceGroupName: 'yue.bai_rg_3155'
 - task: UsePythonVersion@0
   inputs:
     versionSpec: '$(python.version)'
@@ -35,6 +29,12 @@ steps:
     pip install pytest pytest-azurepipelines
     pytest
   displayName: 'pytest'
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: 'Lizard People of The Hollow Earth Subscription(dbd94eae-ba51-4584-9dfa-f2cbefed36db)'
+    appType: 'webAppLinux'
+    appName: 'yuebai-flaskpipeline'
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -42,16 +42,10 @@ steps:
     appType: 'webAppLinux'
     WebAppName: 'yuebai-flaskpipeline'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-- task: AzureWebApp@1
-  displayName: 'Deploy Azure Web App : {{ webAppName }}'
+- task: AzureAppServiceSettings@1
   inputs:
-    azureSubscription: $(azureServiceConnectionId)
-    appType: webApp
-    appName: $(webAppName)
-    package: $(Pipeline.Workspace)/drop/$(Build.BuildId).zip
-    deploymentMethod: zipDeploy
+    azureSubscription: 'Lizard People of The Hollow Earth Subscription(dbd94eae-ba51-4584-9dfa-f2cbefed36db)'
+    appName: 'yuebai-flaskpipeline'
+    resourceGroupName: 'yue.bai_rg_3155'
 
-    # The following parameter is specific to the Flask example code. You may
-    # or may not need a startup command for your app.
 
-    startUpCommand: 'startup.txt'
